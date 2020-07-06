@@ -12,6 +12,7 @@
             <i class="fas fa-pencil-alt">
             </i>
         </a>
+        @if($user->email !== auth()->user()->email)
         <form method="POST" action="{{ route('admin.users.destroy', $user) }}" style="display: inline">
             @method('DELETE')
             @csrf
@@ -21,5 +22,6 @@
                 </i>
             </button>
         </form>
+        @endif
     </td>
 </tr>

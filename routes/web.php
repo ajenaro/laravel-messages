@@ -17,6 +17,9 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::post('admin/messages', 'Admin\MessagesController@store')->name('admin.messages.store');
+Route::get('admin/messages', 'Admin\MessagesController@index')->name('admin.messages.index');
+
 Route::group(
     [
         'prefix' => 'admin',

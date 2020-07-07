@@ -16,8 +16,11 @@ class CanCreateMessages extends TestCase
     {
 
         $user = factory(User::class)->create();
+        $recipient1 = factory(User::class)->create();
+        $recipient2 = factory(User::class)->create();
+
         $data = [
-            'sender_id' => $user->id,
+            'recipients' => [$recipient1, $recipient2],
             'subject' => 'Hola',
             'body' => 'Cuerpo del mensaje'
         ];
@@ -26,12 +29,20 @@ class CanCreateMessages extends TestCase
 
         $response = $this->post(route('admin.messages.store'), $data);
 
-        //$response->assertRedirect('admin.messages.index');
-
         $this->assertDatabaseHas('messages', [
             'sender_id' => $user->id,
             'subject' => 'Hola',
             'body' => 'Cuerpo del mensaje',
         ]);
+
+        $this->assertDatabaseHas('message_recipients', [
+            'recipient_id' => $recipient1->id,
+        ]);
+
+        $this->assertDatabaseHas('message_recipients', [
+            'recipient_id' => $recipient2->id,
+        ]);
+
+        $response->assertRedirect(route('admin.messages.index'));
     }
 }

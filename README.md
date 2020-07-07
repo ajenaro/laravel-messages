@@ -1,4 +1,4 @@
-## Laravel Dashboard with AdminLTE3
+## Laravel Messages with AdminLTE3
 
 1. Clone the repository with git clone
 

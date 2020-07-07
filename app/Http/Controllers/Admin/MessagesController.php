@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MessagesController extends Controller
 {
@@ -36,23 +37,23 @@ class MessagesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'sender_id' => 'required',
+            'recipients' => 'required',
             'subject' => 'required',
             'body' => 'required'
         ]);
 
         $message = Message::create([
-           'sender_id' => $request['sender_id'],
+           'sender_id' => Auth::user()->id,
            'subject' => $request['subject'],
            'body' => $request['body']
        ]);
 
-//        foreach ($request['recipients'] as $recipient_id) {
-//
-//            $message->recipients()->create(['recipient_id' => $recipient_id]);
-//        }
+        foreach ($request['recipients'] as $recipient) {
 
-        return redirect()->route('messages.index');
+            $message->recipients()->create(['recipient_id' => $recipient->id]);
+        }
+
+        return redirect()->route('admin.messages.index');
     }
 
     /**

@@ -4,29 +4,38 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Message;
+use App\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class MessagesController extends Controller
+class MessagesInboxController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $messages = Message::whereHas('recipients', function ($query) {
+            $query->where('recipient_id', auth()->user()->id);
+        })->latest()->get();
+
+        return view('admin.messages.index', [
+            'messages' => $messages,
+            'folder' => 'inbox'
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('admin.messages.create', [
+            'message' => new Message(),
+            'users' => User::all()
+        ]);
     }
 
     /**
@@ -47,10 +56,10 @@ class MessagesController extends Controller
            'subject' => $request['subject'],
            'body' => $request['body']
        ]);
+        
+        foreach ($request['recipients'] as $recipient_id) {
 
-        foreach ($request['recipients'] as $recipient) {
-
-            $message->recipients()->create(['recipient_id' => $recipient->id]);
+            $message->recipients()->create(['recipient_id' => $recipient_id]);
         }
 
         return redirect()->route('admin.messages.index');

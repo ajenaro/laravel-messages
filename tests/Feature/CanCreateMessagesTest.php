@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class CanCreateMessages extends TestCase
+class CanCreateMessagesTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,7 +20,7 @@ class CanCreateMessages extends TestCase
         $recipient2 = factory(User::class)->create();
 
         $data = [
-            'recipients' => [$recipient1, $recipient2],
+            'recipients' => [$recipient1->id, $recipient2->id],
             'subject' => 'Hola',
             'body' => 'Cuerpo del mensaje'
         ];

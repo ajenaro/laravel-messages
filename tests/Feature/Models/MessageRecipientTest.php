@@ -10,6 +10,8 @@ use Tests\TestCase;
 
 class MessageRecipientTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     function a_recipient_belongs_to_a_message()
     {

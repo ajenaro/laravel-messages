@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Message;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -44,5 +45,28 @@ class CanCreateMessagesTest extends TestCase
         ]);
 
         $response->assertRedirect(route('admin.messages.index'));
+    }
+
+    /** @test */
+    function a_user_can_see_messages_sent()
+    {
+        $user = factory(User::class)->create();
+        $recipient = factory(User::class)->create();
+
+        $data = [
+            'recipients' => [$recipient->id],
+            'subject' => 'Hola',
+            'body' => 'Cuerpo del mensaje'
+        ];
+
+        $this->actingAs($user);
+
+        $this->post(route('admin.messages.store'), $data);
+
+        $this->assertDatabaseHas('messages', [
+            'sender_id' => $user->id,
+            'subject' => 'Hola',
+            'body' => 'Cuerpo del mensaje',
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Creativeorange\Gravatar\Facades\Gravatar;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,5 +46,26 @@ class User extends Authenticatable
     public function messages()
     {
         return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function newmessages()
+    {
+        return Message::whereHas('recipients', function ($query) {
+            $query->where('recipient_id', auth()->user()->id);
+            $query->whereNull('read_at');
+        })->latest()->get();
+    }
+
+    public function ownmessages()
+    {
+        return Message::whereHas('recipients', function ($query) {
+            $query->where('recipient_id', $this->id);
+            $query->whereNotNull('read_at');
+        })->latest()->get();
+    }
+
+    public function gravatar()
+    {
+        return Gravatar::get($this->email);
     }
 }

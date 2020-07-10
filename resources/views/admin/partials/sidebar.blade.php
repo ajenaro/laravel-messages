@@ -25,11 +25,11 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-header">MISCELLANEOUS</li>
         <li class="nav-item">
-            <a href="https://adminlte.io/docs/3.0" class="nav-link" target="_blank">
-                <i class="nav-icon fas fa-file"></i>
-                <p>Documentation</p>
+            <a href="{{ route('admin.messages.index') }}"
+               class="nav-link {{ request()->is('admin/messages*') || request()->is('admin/*messages') ? ' active' : '' }}">
+                <i class="far fa-envelope"></i>
+                <p>Messages</p>
             </a>
         </li>
         <li class="nav-item">

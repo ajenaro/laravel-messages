@@ -23,11 +23,13 @@
                             @forelse($messages->load('recipients') as $message)
                                 <tr>
                                     @if($folder == 'inbox')
-                                        <td class="mailbox-name">De: {{ App\User::find($message->sender_id)->name }}</td>
+                                        <td class="mailbox-name">From: {{ $message->user->name }}</td>
+                                    @endif
+                                    @if($folder == 'sent')
+                                        <td class="mailbox-name">To: {{ App\User::findMany($message->recipients->pluck('recipient_id'))->pluck('name')->implode(', ') }}</td>
                                     @endif
                                     <td class="mailbox-subject">
-                                        <a href="{{ route('admin.messages.show', $message) }}">
-                                            {{ $message->subject }}
+                                        Subject: <a href="{{ route('admin.messages.show', $message) }}">{{ $message->subject }}
                                         </a>
                                     </td>
                                     <td class="mailbox-date">{{ $message->created_at->diffForHumans() }}</td>
@@ -42,20 +44,11 @@
                                                 </button>
                                             </form>
                                         @elseif($folder == 'trash')
-                                            <form method="POST" action="{{ route('admin.trashmessages.update', $message) }}" style="display: inline">
+                                            <form method="POST" action="{{ route('admin.trash.update', $message) }}" style="display: inline">
                                                 @csrf
                                                 @method('PUT')
                                                 <button class="btn btn-info btn-xs" title="Restore">
                                                     <i class="fas fa-trash-restore"></i>
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="{{ route('admin.trashmessages.destroy', $message) }}" style="display: inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-xs" title="Eliminar"
-                                                        onclick="return confirm('¿Estás seguro/a?')">
-                                                    <i class="fas fa-trash">
-                                                    </i>
                                                 </button>
                                             </form>
                                         @endif

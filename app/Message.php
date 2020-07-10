@@ -15,6 +15,6 @@ class Message extends Model
 
     public function recipients()
     {
-        return $this->hasMany(MessageRecipient::class);
+        return $this->hasMany(MessageRecipient::class)->withTrashed();
     }
 }

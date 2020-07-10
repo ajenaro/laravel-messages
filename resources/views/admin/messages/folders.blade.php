@@ -10,12 +10,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('admin.sent.index') }}" class="nav-link">
                     <i class="far fa-paper-plane"></i> Send
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('admin.trash.index') }}" class="nav-link">
                     <i class="far fa-trash-alt"></i> Trash
                 </a>
             </li>

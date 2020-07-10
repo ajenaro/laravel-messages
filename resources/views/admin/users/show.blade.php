@@ -25,7 +25,7 @@
                 <div class="card-body box-profile">
                     <div class="text-center">
                         <img class="profile-user-img img-fluid img-circle"
-                             src="{{ Gravatar::get($user->email) }}"
+                             src="{{ $user->gravatar() }}"
                              alt="{{ $user->name }}">
                     </div>
 
@@ -46,7 +46,31 @@
         <div class="col-md-3">
             <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">Last Logins</h3>
+                    <h3 class="card-title">Lastest Read Messages</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    @forelse($user->ownmessages()->take(5) as $message)
+                        <a href="{{ route('admin.messages.show', $message) }}">
+                            <strong>{{ $message->subject }}</strong>
+                        </a>
+                        <br>
+                        <small class="text-muted">Sent {{ $message->created_at->format('d/m/Y H:i:s') }} by {{ $message->user->name }}</small>
+
+                        @unless($message->last)
+                            <hr>
+                        @endunless
+                    @empty
+                        <small class="text-muted">You have not messages</small>
+                    @endforelse
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Column3</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -58,19 +82,7 @@
         <div class="col-md-3">
             <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">Roles</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-
-                </div>
-                <!-- /.card-body -->
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card card-primary card-outline">
-                <div class="card-header">
-                    <h3 class="card-title">Permissions</h3>
+                    <h3 class="card-title">Column4</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">

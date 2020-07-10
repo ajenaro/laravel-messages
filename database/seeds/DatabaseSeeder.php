@@ -1,5 +1,7 @@
 <?php
 
+use App\Message;
+use App\MessageRecipient;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,5 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(UserSeeder::class);
+        Message::truncate();
+        MessageRecipient::truncate();
     }
 }

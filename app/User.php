@@ -60,6 +60,7 @@ class User extends Authenticatable
     {
         return Message::whereHas('recipients', function ($query) {
             $query->where('recipient_id', $this->id);
+            $query->whereNull('deleted_at');
             $query->whereNotNull('read_at');
         })->latest()->get();
     }
